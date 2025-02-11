@@ -43,7 +43,8 @@ public class Cell {
         if (isEmpty()){
             return colorize("   ",color.getColor());
         } else {
-            return colorize(" ",color.getColor())+piece.toString()+colorize(" ",color.getColor());
+            return colorize(" ",color.getColor())+piece.toString()+
+                    colorize(" ",color.getColor());
         }
     }
 

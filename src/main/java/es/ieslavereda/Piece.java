@@ -19,7 +19,7 @@ public class Piece {
         if(cell==null){
             return colorize(type.getShape(),type.getColor().getColor());
         } else {
-            return colorize(type.getShape(),type.getColor().getColor(),cell.getColor().getColor());
+            return colorize(type.getShape(),type.getColor().getColor());
         }
     }
 
