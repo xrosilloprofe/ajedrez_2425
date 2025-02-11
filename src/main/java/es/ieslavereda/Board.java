@@ -1,43 +1,51 @@
 package es.ieslavereda;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Board {
-
     private Cell[][] cells;
-
     public Board(){
         cells = new Cell[8][8];
-        for (int i = 0; i < cells.length; i++) {
-            for (int j = 0; j < cells[0].length; j++) {
-                cells[i][j] = new Cell(this,new Coordinate((char) ('A'+i),j+1));
-            }
-        }
-    }
 
+        for (int row=1;row<= cells.length;row++)
+            for(char col='A';col<='H';col++)
+                cells[row-1][col-'A']=new Cell(this,new Coordinate(col,row));
+
+    }
     public boolean contains(Coordinate c) {
-        return !(c.getNumber()<1 || c.getNumber()>8
-                || c.getLetter()<'A' || c.getLetter()>'H');
-    }
+        if(c.getLetter()<'A' || c.getLetter()>'H') return false;
+        if(c.getNumber()<1 || c.getNumber()>8) return false;
 
+        return true;
+    }
     public Cell getCellAt(Coordinate c) {
         if(!contains(c)) return null;
+
         return cells[c.getNumber()-1][c.getLetter()-'A'];
     }
-
+    public void highLight(List<Coordinate> coordinates){
+        coordinates.stream().forEach(coordinate -> getCellAt(coordinate).highlight());
+    }
+    public void highLight(Coordinate[] coordinates){
+        highLight(Arrays.asList(coordinates));
+    }
+    public void removeHighLight(){
+        Arrays.asList(cells).stream()
+                .flatMap(cells1 -> Arrays.asList(cells1).stream())
+                .forEach(cell -> cell.removeHighLight());
+    }
     @Override
     public String toString() {
-        String aux = "    A  B  C  D  E  F  G  H\n";
-        int row = 1;
-        for(Cell[] fila:cells){
-            aux += " " + row + " ";
-            for(Cell celda:fila){
-                aux += celda;
-            }
-            aux += " " + row++ + "\n";
+        String aux="    A  B  C  D  E  F  G  H\n";
+        int row=1;
+        for(Cell[] rowCell : cells){
+            aux+=" " + row +" ";
+            for(Cell cell : rowCell)
+                aux+=cell;
+            aux+=" " + row++ + "\n";
         }
-        aux += "    A  B  C  D  E  F  G  H";
+        aux+="    A  B  C  D  E  F  G  H";
         return aux;
     }
-
-
-
 }
